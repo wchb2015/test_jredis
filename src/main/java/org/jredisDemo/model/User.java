@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class User {
 
-    private long userId;
+    private long id;
 
     private String userName;
 
@@ -56,18 +56,18 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public long getUserId() {
-        return userId;
+    public long getId() {
+        return id;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +

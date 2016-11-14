@@ -6,13 +6,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.clients.jedis.Jedis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/spring-dao.xml")
-public class RedisDaoTest {
+public class UserRedisDaoTest {
 
     @Autowired
-    private RedisDao redisDao;
+    private UserRedisDao userRedisDao;
+
+    @Test
+    public void testRedis() {
+        Jedis jedis = new Jedis("127.0.0.1");
+        jedis.keys("*");
+    }
 
     @Test
     public void getUser() throws Exception {
@@ -23,9 +30,9 @@ public class RedisDaoTest {
     public void putUser() throws Exception {
         User user = new User();
 
-        user.setUserId(888l);
+        user.setId(888l);
         user.setUserName("zhangsan");
-        redisDao.putUser(user);
+        userRedisDao.putUser(user);
     }
 
 }

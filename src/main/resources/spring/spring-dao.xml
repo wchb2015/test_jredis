@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath*:redis.properties"/>
 
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="minIdle" value="${redis.minIdle}"/>
@@ -13,20 +16,22 @@
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
     </bean>
 
-    <!--RedisDao-->
-    <bean id="redisDao" class="org.jredisDemo.dao.cache.RedisDao">
-        <constructor-arg index="0" value="127.0.0.1"/>
-        <constructor-arg index="1" value="6379"/>
-    </bean>
-
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           p:host-name="${redis.host}" p:port="${redis.port}" p:pool-config-ref="poolConfig"/>
     <!--p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.pass}" p:pool-config-ref="poolConfig"/>-->
+    <bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
 
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="enableTransactionSupport" value="true"/>
+        <property name="stringSerializer" ref="stringSerializer"/>
     </bean>
 
     <bean id="userDao" class="org.jredisDemo.dao.UserDaoImpl"/>
 
+    <!--RedisDao-->
+    <bean id="userRedisDao" class="org.jredisDemo.dao.cache.UserRedisDao">
+        <constructor-arg index="0" value="127.0.0.1"/>
+        <constructor-arg index="1" value="6379"/>
+    </bean>
 </beans>

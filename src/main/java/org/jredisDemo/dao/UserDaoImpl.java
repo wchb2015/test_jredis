@@ -17,7 +17,7 @@ public class UserDaoImpl extends AbstractBaseRedisDao<String, User> implements I
             public Boolean doInRedis(RedisConnection connection)
                     throws DataAccessException {
                 RedisSerializer<String> serializer = getRedisSerializer();
-                byte[] key = serializer.serialize(user.getUserId() + "");
+                byte[] key = serializer.serialize(user.getId() + "");
                 byte[] name = serializer.serialize(user.getUserName());
                 return connection.setNX(key, name);
             }
@@ -33,7 +33,7 @@ public class UserDaoImpl extends AbstractBaseRedisDao<String, User> implements I
                     throws DataAccessException {
                 RedisSerializer<String> serializer = getRedisSerializer();
                 for (User user : list) {
-                    byte[] key = serializer.serialize(user.getUserId() + "");
+                    byte[] key = serializer.serialize(user.getId() + "");
                     byte[] name = serializer.serialize(user.getUserName());
                     connection.setNX(key, name);
                 }
@@ -59,7 +59,7 @@ public class UserDaoImpl extends AbstractBaseRedisDao<String, User> implements I
 
 
     public boolean update(final User user) {
-        String key = user.getUserId() + "";
+        String key = user.getId() + "";
         if (get(key) == null) {
             throw new NullPointerException("数据行不存在, key = " + key);
         }
@@ -67,7 +67,7 @@ public class UserDaoImpl extends AbstractBaseRedisDao<String, User> implements I
             public Boolean doInRedis(RedisConnection connection)
                     throws DataAccessException {
                 RedisSerializer<String> serializer = getRedisSerializer();
-                byte[] key = serializer.serialize(user.getUserId() + "");
+                byte[] key = serializer.serialize(user.getId() + "");
                 byte[] name = serializer.serialize(user.getUserName());
                 connection.set(key, name);
                 return true;

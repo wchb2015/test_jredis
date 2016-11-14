@@ -9,15 +9,15 @@ import org.jredisDemo.model.User;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-public class RedisDao {
+public class UserRedisDao {
 
     //private final Log LOG = LogFactory.getLog(this.getClass());
-    private static final Logger LOG = LoggerFactory.getLogger(RedisDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserRedisDao.class);
     private final JedisPool jedisPool;
 
     private RuntimeSchema<User> schema = RuntimeSchema.createFrom(User.class);
 
-    public RedisDao(String ip, int port) {
+    public UserRedisDao(String ip, int port) {
         jedisPool = new JedisPool(ip, port);
     }
 
@@ -59,7 +59,7 @@ public class RedisDao {
         try {
             Jedis jedis = jedisPool.getResource();
             try {
-                String key = "user:" + user.getUserId();
+                String key = "user:" + user.getId();
                 byte[] bytes = ProtostuffIOUtil.toByteArray(user, schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
                 //超时缓存
                 int timeOut = 60 * 60;
