@@ -12,6 +12,7 @@
     <properties>
         <slf4j.version>1.7.21</slf4j.version>
         <spring.version>4.2.0.RELEASE</spring.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
@@ -164,6 +165,21 @@
     <!-- Build Settings -->
     <!--http://maven.apache.org/pom.html#Build_Settings-->
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <finalName>test_jredis</finalName>
         <resources>
             <resource>
